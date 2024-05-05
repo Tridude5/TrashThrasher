@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cm2k1fnqyl0lq"]
+
+[ext_resource type="PackedScene" uid="uid://c200mwutpwlne" path="res://Scenes/TestPlanet.tscn" id="1_442a0"]
+[ext_resource type="PackedScene" uid="uid://mp4tfblhfnbf" path="res://Scenes/FallingObject.tscn" id="2_dnyh7"]
+
+[node name="TestLevel" type="Node2D"]
+
+[node name="TestPlanet" parent="." instance=ExtResource("1_442a0")]
+top_level = true
+position = Vector2(355, 572)
+
+[node name="RigidBody2D" parent="." instance=ExtResource("2_dnyh7")]
+position = Vector2(349, 244)
