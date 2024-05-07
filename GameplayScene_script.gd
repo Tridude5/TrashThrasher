@@ -6,7 +6,7 @@ const SCREEN_HEIGHT = 600
 
 func _ready():
 	# Set the screen size
-	get_viewport().size = Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+	#get_viewport().size = Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
 	
 	# Add the player character
 	var player = Player.new()

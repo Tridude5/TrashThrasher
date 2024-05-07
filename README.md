@@ -10,12 +10,12 @@ extends Node2D
 const SCREEN_WIDTH = 800
 const SCREEN_HEIGHT = 600
 func _ready():
-    # Set the screen size
-    get_viewport().size = Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
-        # Add the player character
-    var player = Player.new()
-    add_child(player)
-    
+	# Set the screen size
+	get_viewport().size = Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+		# Add the player character
+	var player = Player.new()
+	add_child(player)
+	
 This code sets up the basic structure of the game. We create a new scene that extends Node2D and set constants for the screen width and height. In the _ready() function, we set the viewport size and add the player character (which we'll define in the next section).
 The get_viewport() function in Godot returns the viewport, which represents the size and position of the visible area of the game. By using get_viewport().size, we are getting the size of the viewport, which is essentially the size of the user's screen or the game window where the game will be displayed. This allows us to set up our game's dimensions accordingly, ensuring it fits well on the screen.
 
@@ -24,18 +24,18 @@ The get_viewport() function in Godot returns the viewport, which represents the 
 extends CharacterBody2D
 const SPEED = 300
 func _process(delta):
-    # Move the player left or right based on input
-    var direction = 0
-    if Input.is_action_pressed("move_left"):
-        direction -= 1
-    if Input.is_action_pressed("move_right"):
-        direction += 1
-    move_and_slide(Vector2(direction * SPEED * delta, 0))
+	# Move the player left or right based on input
+	var direction = 0
+	if Input.is_action_pressed("move_left"):
+		direction -= 1
+	if Input.is_action_pressed("move_right"):
+		direction += 1
+	move_and_slide(Vector2(direction * SPEED * delta, 0))
 
 func _ready():
-    # Set the initial position of the player
-    position = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 50)
-    
+	# Set the initial position of the player
+	position = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 50)
+	
 This code defines the player character as a CharacterBody2D, which allows for physics-based movement. The _process(delta) function handles player movement by checking for input (left or right arrow keys) and moving the player accordingly. The _ready() function sets the initial position of the player at the bottom center of the screen.
 
 
@@ -45,12 +45,12 @@ Create the falling objects, which the player will shoot down; starting with a ba
 extends CharacterBody2D
 const FALL_SPEED = 200
 func _process(delta):
-    # Move the falling object downwards
-    move_and_collide(Vector2(0, FALL_SPEED * delta))
-    # Check if the object has reached the bottom of the screen
-    if position.y > SCREEN_HEIGHT:
-        queue_free()  # Destroy the object if it's below the screen
-        
+	# Move the falling object downwards
+	move_and_collide(Vector2(0, FALL_SPEED * delta))
+	# Check if the object has reached the bottom of the screen
+	if position.y > SCREEN_HEIGHT:
+		queue_free()  # Destroy the object if it's below the screen
+		
 In this code, we define a falling object as a CharacterBody2D. The _process(delta) function moves the object downwards at a constant speed (FALL_SPEED) using move_and_collide(). We also check if the object has reached the bottom of the screen and then destroy it using queue_free() to prevent it from accumulating at the bottom.
 
 Creating a script that handles spawning falling objects at regular intervals? Created a new script called FallingObjectSpawner.gd for this purpose.
@@ -63,18 +63,18 @@ const SPAWN_INTERVAL = 1.5
 var time_since_last_spawn = 0
 var falling_object_scene = preload("res://FallingObject.tscn")
 func _process(delta):
-    time_since_last_spawn += delta
-    # Check if it's time to spawn a new object
-    if time_since_last_spawn >= SPAWN_INTERVAL:
-        spawn_object()
-        time_since_last_spawn = 0
+	time_since_last_spawn += delta
+	# Check if it's time to spawn a new object
+	if time_since_last_spawn >= SPAWN_INTERVAL:
+		spawn_object()
+		time_since_last_spawn = 0
 func spawn_object():
-    # Instantiate a new falling object and add it to the scene
-    var new_object = falling_object_scene.instance()
-    add_child(new_object)
-    new_object.position.x = rand_range(0, SCREEN_WIDTH)  # Randomize x position
-    new_object.position.y = -new_object.texture.get_height()  # Start above the screen
-    
+	# Instantiate a new falling object and add it to the scene
+	var new_object = falling_object_scene.instance()
+	add_child(new_object)
+	new_object.position.x = rand_range(0, SCREEN_WIDTH)  # Randomize x position
+	new_object.position.y = -new_object.texture.get_height()  # Start above the screen
+	
 In this script, we define a FallingObjectSpawner that spawns falling objects (FallingObject.tscn) at regular intervals (SPAWN_INTERVAL). The _process(delta) function keeps track of time to spawn objects, and spawn_object() instantiates a new falling object and adds it to the scene.
 Make sure to adjust SPAWN_INTERVAL as needed for the game's pacing. 
 
@@ -90,25 +90,25 @@ const SHOOT_SPEED = 500
 var can_shoot = true
 var projectile_scene = preload("res://Projectile.tscn")
 func _process(delta):
-    move_player(delta)
-    check_shoot()
+	move_player(delta)
+	check_shoot()
 func move_player(delta):
-    var direction = 0
-    if Input.is_action_pressed("move_left"):
-        direction -= 1
-    if Input.is_action_pressed("move_right"):
-        direction += 1
-    move_and_slide(Vector2(direction * SPEED * delta, 0))
+	var direction = 0
+	if Input.is_action_pressed("move_left"):
+		direction -= 1
+	if Input.is_action_pressed("move_right"):
+		direction += 1
+	move_and_slide(Vector2(direction * SPEED * delta, 0))
 func check_shoot():
-    if Input.is_action_just_pressed("shoot") and can_shoot:
-        var projectile = projectile_scene.instance()
-        get_parent().add_child(projectile)
-        projectile.position = position
-        projectile.velocity = Vector2(0, -SHOOT_SPEED)
-        can_shoot = false
-        $Timer.start()  # Start cooldown timer for shooting
+	if Input.is_action_just_pressed("shoot") and can_shoot:
+		var projectile = projectile_scene.instance()
+		get_parent().add_child(projectile)
+		projectile.position = position
+		projectile.velocity = Vector2(0, -SHOOT_SPEED)
+		can_shoot = false
+		$Timer.start()  # Start cooldown timer for shooting
 func _on_Timer_timeout():
-    can_shoot = true
+	can_shoot = true
 }
 
 Then created the Projectile script to handle projectile movement and collision detection:
@@ -117,19 +117,19 @@ extends Area2D
 export var velocity = Vector2.ZERO
 const BOUNDARY_MARGIN = 20
 func _process(delta):
-    move_and_collide(velocity * delta)
-    # Destroy projectile if it goes out of bounds
-    if position.y < -BOUNDARY_MARGIN:
-        queue_free()
+	move_and_collide(velocity * delta)
+	# Destroy projectile if it goes out of bounds
+	if position.y < -BOUNDARY_MARGIN:
+		queue_free()
 func _on_Area2D_body_entered(body):
-    if body.is_in_group("enemy"):
-        # Play explosion effect
-        var explosion = preload("res://Explosion.tscn").instance()
-        get_parent().add_child(explosion)
-        explosion.position = position
-        body.queue_free()  # Destroy the enemy object
-        queue_free()  # Destroy the projectile
-        
+	if body.is_in_group("enemy"):
+		# Play explosion effect
+		var explosion = preload("res://Explosion.tscn").instance()
+		get_parent().add_child(explosion)
+		explosion.position = position
+		body.queue_free()  # Destroy the enemy object
+		queue_free()  # Destroy the projectile
+		
 In the Player script, we added shooting logic to instantiate projectiles (Projectile.tscn) when the shoot action is triggered. The Projectile script handles projectile movement, destruction upon leaving the screen, and triggering an explosion effect and destroying the projectile and enemy when they collide.
 
 1.	Projectile Scene:
@@ -139,19 +139,19 @@ extends Area2D
 export var velocity = Vector2.ZERO
 const BOUNDARY_MARGIN = 20
 func _process(delta):
-    move_and_collide(velocity * delta)
+	move_and_collide(velocity * delta)
 
-    # Destroy projectile if it goes out of bounds
-    if position.y < -BOUNDARY_MARGIN:
-        queue_free()
+	# Destroy projectile if it goes out of bounds
+	if position.y < -BOUNDARY_MARGIN:
+		queue_free()
 func _on_Area2D_body_entered(body):
-    if body.is_in_group("enemy"):
-        # Play explosion effect
-        var explosion = preload("res://Explosion.tscn").instance()
-        get_parent().add_child(explosion)
-        explosion.position = position
-        body.queue_free()  # Destroy the enemy object
-        queue_free()  # Destroy the projectile
+	if body.is_in_group("enemy"):
+		# Play explosion effect
+		var explosion = preload("res://Explosion.tscn").instance()
+		get_parent().add_child(explosion)
+		explosion.position = position
+		body.queue_free()  # Destroy the enemy object
+		queue_free()  # Destroy the projectile
 
 Then created the Explosion scene.
 2.	Explosion Scene:
@@ -160,10 +160,10 @@ An example of how the Explosion script (Explosion.gd) could look like:
 
 extends Node2D
 func _ready():
-    $AnimatedSprite.play("explode")  # Start the explosion animation
+	$AnimatedSprite.play("explode")  # Start the explosion animation
 func _on_AnimatedSprite_animation_finished():
-    queue_free()  # Destroy the explosion node after animation finishes
-    
+	queue_free()  # Destroy the explosion node after animation finishes
+	
 In this script, we play the explosion animation when the Explosion scene is instantiated and then automatically destroy the explosion node when the animation finishes.
 Once we've created these scenes and scripts, we'll need to adjust the properties, animations, and collision shapes as needed for our game.
 
@@ -172,24 +172,24 @@ To integrate the Projectile and Explosion scenes into the main game scene, we'll
 1.	Instantiate Projectile in the Player Script: In the Player script where we handle shooting, we already have the logic to instantiate projectiles. When the player shoots, we create a new instance of the Projectile scene and add it to the scene hierarchy. Here's the relevant code from the Player script:
 
 func check_shoot():
-    if Input.is_action_just_pressed("shoot") and can_shoot:
-        var projectile = projectile_scene.instance()
-        get_parent().add_child(projectile)
-        projectile.position = position
-        projectile.velocity = Vector2(0, -SHOOT_SPEED)
-        can_shoot = false
-        $Timer.start()  # Start cooldown timer for shooting
+	if Input.is_action_just_pressed("shoot") and can_shoot:
+		var projectile = projectile_scene.instance()
+		get_parent().add_child(projectile)
+		projectile.position = position
+		projectile.velocity = Vector2(0, -SHOOT_SPEED)
+		can_shoot = false
+		$Timer.start()  # Start cooldown timer for shooting
 
 2.	Instantiate Explosion in the Projectile Script: When a projectile collides with an enemy in the Projectile script, we create an explosion effect and add it to the scene. Here's the relevant code from the Projectile script:
 
 func _on_Area2D_body_entered(body):
-    if body.is_in_group("enemy"):
-        # Play explosion effect
-        var explosion = preload("res://Explosion.tscn").instance()
-        get_parent().add_child(explosion)
-        explosion.position = position
-        body.queue_free()  # Destroy the enemy object
-        queue_free()  # Destroy the projectile
+	if body.is_in_group("enemy"):
+		# Play explosion effect
+		var explosion = preload("res://Explosion.tscn").instance()
+		get_parent().add_child(explosion)
+		explosion.position = position
+		body.queue_free()  # Destroy the enemy object
+		queue_free()  # Destroy the projectile
 
 
 3.	Adding Enemy Objects and Grouping: Make sure your falling objects (enemies) are also instantiated and added to the scene dynamically, similar to how we spawn the falling objects using the FallingObjectSpawner script. You can then group these enemy objects and assign them to the "enemy" group in Godot's inspector. This grouping allows the projectile to detect collisions only with objects in the "enemy" group.
@@ -296,27 +296,27 @@ const SHOOT_SPEED = 500
 var can_shoot = true
 var projectile_scene = preload("res://Projectile.tscn")
 func _process(delta):
-    move_player(delta)
-    check_shoot()
+	move_player(delta)
+	check_shoot()
 func move_player(delta):
-    var direction = 0
-    # Handle movement with arrow keys or A/D keys
-    if Input.is_action_pressed("ui_left") or Input.is_action_pressed("move_left"):
-        direction -= 1
-    if Input.is_action_pressed("ui_right") or Input.is_action_pressed("move_right"):
-        direction += 1
-    move_and_slide(Vector2(direction * SPEED * delta, 0))
+	var direction = 0
+	# Handle movement with arrow keys or A/D keys
+	if Input.is_action_pressed("ui_left") or Input.is_action_pressed("move_left"):
+		direction -= 1
+	if Input.is_action_pressed("ui_right") or Input.is_action_pressed("move_right"):
+		direction += 1
+	move_and_slide(Vector2(direction * SPEED * delta, 0))
 func check_shoot():
-    if Input.is_action_just_pressed("shoot") and can_shoot:
-        var projectile = projectile_scene.instance()
-        get_parent().add_child(projectile)
-        projectile.position = position
-        projectile.velocity = Vector2(0, -SHOOT_SPEED)
-        can_shoot = false
-        $Timer.start()  # Start cooldown timer for shooting
+	if Input.is_action_just_pressed("shoot") and can_shoot:
+		var projectile = projectile_scene.instance()
+		get_parent().add_child(projectile)
+		projectile.position = position
+		projectile.velocity = Vector2(0, -SHOOT_SPEED)
+		can_shoot = false
+		$Timer.start()  # Start cooldown timer for shooting
 func _on_Timer_timeout():
-    can_shoot = true
-    
+	can_shoot = true
+	
 In this modified code:
 •	We use Input.is_action_pressed("ui_left") and Input.is_action_pressed("ui_right") to check for arrow key presses.
 •	We also keep the existing checks for "move_left" and "move_right" actions, which can be bound to the "A" and "D" keys respectively.
