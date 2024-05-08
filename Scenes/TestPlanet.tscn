@@ -1,14 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://c200mwutpwlne"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gf1bu"]
-size = Vector2(719, 26)
+size = Vector2(1001, 26)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_f5ila"]
 
 [node name="StaticBody2D" type="StaticBody2D"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(3.5, 12)
+position = Vector2(0.5, 12)
 shape = SubResource("RectangleShape2D_gf1bu")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

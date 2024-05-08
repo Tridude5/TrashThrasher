@@ -41,44 +41,27 @@ This code defines the player character as a CharacterBody2D, which allows for ph
 
 Create the falling objects, which the player will shoot down; starting with a basic object that falls from the top of the screen.
 
-3.	Falling Objects:
-extends CharacterBody2D
-const FALL_SPEED = 200
-func _process(delta):
-	# Move the falling object downwards
-	move_and_collide(Vector2(0, FALL_SPEED * delta))
-	# Check if the object has reached the bottom of the screen
-	if position.y > SCREEN_HEIGHT:
-		queue_free()  # Destroy the object if it's below the screen
+TrashObject: Object that utilizes physics engine to fall towards the ground.  Has a collider to detect projectile hits and interact with objects.
+
+	extends RigidBody2D
+
+FallingObjectSpawner:  Test object for spawning trash objects.
+
+	extends Node2D
+
+		const SPAWN_INTERVAL - Sets time between spawns
+
+		func _process(delta): Keeps track of time since last spawn and spawns objects if appropriate time has passed.
+
+		func spawn_object():  Creates new instance of TrashObject, spawns it just above the screen, sets its location randomly across the screen, and sets it to a random rotation.
+
+		Shooting mechanics can include effects like an explosion when an object is hit and destroyed. 
 		
-In this code, we define a falling object as a CharacterBody2D. The _process(delta) function moves the object downwards at a constant speed (FALL_SPEED) using move_and_collide(). We also check if the object has reached the bottom of the screen and then destroy it using queue_free() to prevent it from accumulating at the bottom.
-
-Creating a script that handles spawning falling objects at regular intervals? Created a new script called FallingObjectSpawner.gd for this purpose.
-
-4.	Falling Object Spawner:
-Created a new script called FallingObjectSpawner.gd and added the following code:
-
-extends Node2D
-const SPAWN_INTERVAL = 1.5
-var time_since_last_spawn = 0
-var falling_object_scene = preload("res://FallingObject.tscn")
-func _process(delta):
-	time_since_last_spawn += delta
-	# Check if it's time to spawn a new object
-	if time_since_last_spawn >= SPAWN_INTERVAL:
-		spawn_object()
-		time_since_last_spawn = 0
-func spawn_object():
-	# Instantiate a new falling object and add it to the scene
-	var new_object = falling_object_scene.instance()
-	add_child(new_object)
-	new_object.position.x = rand_range(0, SCREEN_WIDTH)  # Randomize x position
-	new_object.position.y = -new_object.texture.get_height()  # Start above the screen
+TestPlanet: Simple rectangle with collision to hold the place of the actual planet.
 	
-In this script, we define a FallingObjectSpawner that spawns falling objects (FallingObject.tscn) at regular intervals (SPAWN_INTERVAL). The _process(delta) function keeps track of time to spawn objects, and spawn_object() instantiates a new falling object and adds it to the scene.
-Make sure to adjust SPAWN_INTERVAL as needed for the game's pacing. 
+	extends StaticBody2D 
 
-Shooting mechanics can include effects like an explosion when an object is hit and destroyed. 
+TestLevel: Level containing a TestPlanet and a FallingObjectSpawner.  Can be used to test physics and behavior of objects.
 
 5.	Shooting Mechanics and Object Destruction:
    
