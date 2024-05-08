@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://mp4tfblhfnbf"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_mavv7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_higj4"]
+size = Vector2(14, 14)
+
+[node name="RigidBody2D" type="RigidBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(5.96046e-08, 5.96046e-07)
+scale = Vector2(14, 14)
+texture = SubResource("PlaceholderTexture2D_mavv7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_higj4")
