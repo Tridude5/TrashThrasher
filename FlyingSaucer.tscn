@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://kdva342omuy8"]
+
+[node name="FlyingSaucer" type="Node2D"]
+position = Vector2(602, 461)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
