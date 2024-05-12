@@ -1,7 +1,10 @@
-[gd_scene format=3 uid="uid://kdva342omuy8"]
+[gd_scene load_steps=2 format=3 uid="uid://kdva342omuy8"]
+
+[ext_resource type="Script" path="res://FlyingSaucer.gd" id="1_ysgo2"]
 
 [node name="FlyingSaucer" type="Node2D"]
 position = Vector2(602, 461)
+script = ExtResource("1_ysgo2")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
